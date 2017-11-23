@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 # MAINTAINER Maksym Bilenko <sath891@gmail.com>
 # Forked private 
@@ -13,13 +13,19 @@ ADD init.ora /
 ADD initXETemp.ora /
 
 # Prepare to install Oracle
-RUN apt-get update && apt-get install -y -q libaio1 net-tools bc curl rlwrap && \
-apt-get clean && \
-rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* &&\
-ln -s /usr/bin/awk /bin/awk &&\
-mkdir /var/lock/subsys &&\
-chmod 755 /sbin/chkconfig &&\
-/oracle-install.sh
+RUN apt-get update \
+ && apt-get install -y -q libaio1 \
+                          net-tools \
+                          bc \
+                          curl \
+                          rlwrap \
+                          htop \
+ && apt-get clean \
+ && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* \
+ && ln -s /usr/bin/awk /bin/awk \
+ && mkdir /var/lock/subsys \
+ && chmod 755 /sbin/chkconfig \
+ && /oracle-install.sh
 
 # see issue #1
 ENV ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
