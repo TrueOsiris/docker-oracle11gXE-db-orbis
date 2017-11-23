@@ -3,7 +3,7 @@
 ##############################################################################
 open_cursors=300
 db_name=XE
-control_files=("/u01/app/oracle/oradata/xe/control.dbf")
+control_files=("/u01/app/oracle/oradata/XE/control.dbf")
 DB_RECOVERY_FILE_DEST=/u01/app/oracle/fast_recovery_area
 DB_RECOVERY_FILE_DEST_SIZE=1000G
 job_queue_processes=4
@@ -19,7 +19,7 @@ processes=500
 sessions=555
 transactions=610
 
-audit_file_dest=/u01/app/oracle/admin/xe/adump
+audit_file_dest=/u01/app/oracle/admin/XE/adump
 remote_login_passwordfile=EXCLUSIVE
 dispatchers="(PROTOCOL=TCP) (SERVICE=XEXDB)"
 shared_servers=4
