@@ -1,42 +1,25 @@
 #!/bin/bash
 
-ORA_DEB="oracle-xe_11.2.0-1.0_amd64.deb"
-
-#
-# download the Oracle installer
-#
-downloadOracle () {
-
-	local url="https://github.com/MaksymBilenko/docker-oracle-xe-11g"
-
-	local ora_deb_partial=( 
-		${ORA_DEB}aa 
-		${ORA_DEB}ab 
-		${ORA_DEB}ac
+debPackage="oracle-xe_11.2.0-1.0_amd64.deb"
+debPrep () {
+	local url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
+	local debPackage_part=( 
+		${debPackage}aa 
+		${debPackage}ab 
+		${debPackage}ac
 	)
-
 	local i=1
-	for part in "${ora_deb_partial[@]}"; do     
-		echo "[Downloading '$part' (part $i/3)]"
-		curl -s --retry 3 -m 60 -o /$part -L $url/blob/master/$part?raw=true
+	for j in "${debPackage_part[@]}"; do     
+		echo "[Downloading '$j' (part $i/3)]"
+		curl -s --retry 3 -m 60 -o /$j -L $url/blob/master/$j?raw=true
 		i=$((i + 1))
-
 	done
-
-	cat /${ORA_DEB}a* > /${ORA_DEB}
-
-	rm -f /${ORA_DEB}a*
-
+	cat /${debPackage}a* > /${debPackage}
+	rm -f /${debPackage}a*
 }
-
-downloadOracle
-
-dpkg --install /${ORA_DEB}
-rm -f /${ORA_DEB}
-
+debPrep 
+dpkg --install /${debPackage} && rm -f /${debPackage}
 mv /init.ora       /u01/app/oracle/product/11.2.0/xe/config/scripts
 mv /initXETemp.ora /u01/app/oracle/product/11.2.0/xe/config/scripts
-
 mv /u01/app/oracle/product /u01/app/oracle-product
-
 apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
