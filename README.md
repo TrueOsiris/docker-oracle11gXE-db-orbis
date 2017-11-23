@@ -1,4 +1,4 @@
-docker-oracle-xe-11g
+docker-oracle11gXE-db-orbis
 ============================
 [![](https://images.microbadger.com/badges/image/sath89/oracle-xe-11g.svg)](https://microbadger.com/images/sath89/oracle-xe-11g "Get your own image badge on microbadger.com")
 
