@@ -30,7 +30,7 @@ if [ -f /config/$(echo $initfile) ]; then
 else
 	echo 'creating initfile $initfile.'
 	echo -e "Do not remove this file.\nIf you do, container will be fully reset on next start." > /config/$(echo $initfile)
-	echo -e "Installstep: 0. initfile created" >> /config/$(echo $initfile)
+	echo -e "Installstep 0: initfile created" >> /config/$(echo $initfile)
 fi
 GetInstallstep
 echo $installstep
