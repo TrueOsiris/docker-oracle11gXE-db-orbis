@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+initfile=$(echo $HOST_HOSTNAME)\.initialised
+
+
+
 debPackage="oracle-xe_11.2.0-1.0_amd64.deb"
 debPrep () {
 	local url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
