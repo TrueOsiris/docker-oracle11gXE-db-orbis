@@ -4,7 +4,7 @@
 chown -R oracle:dba /u01/app/oracle
 rm -f /u01/app/oracle/product
 ln -s /u01/app/oracle-product /u01/app/oracle/product
-if [ ! "$PORT" ]; then
+if [ "$PORT" = "" ]; then
 	PORT=1521
 fi
 # Update hostname
