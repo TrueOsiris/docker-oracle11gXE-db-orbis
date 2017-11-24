@@ -1,7 +1,6 @@
 FROM ubuntu:14.04
 
 # MAINTAINER Maksym Bilenko <sath891@gmail.com>
-# Forked private 
 MAINTAINER Tim Chaubet <tim.chaubet@agfa.com>
 
 # get rid of the message: "debconf: unable to initialize frontend: Dialog"
@@ -32,6 +31,7 @@ ENV ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
 ENV PATH $ORACLE_HOME/bin:$PATH
 ENV ORACLE_SID=XE
 ENV DEFAULT_SYS_PASS oracle
+ENV PORT 1521
 
 EXPOSE 1521
 EXPOSE 8080
