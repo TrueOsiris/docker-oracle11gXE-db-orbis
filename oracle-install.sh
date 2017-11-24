@@ -11,7 +11,7 @@ debPrep () {
 	local i=1
 	for j in "${debPackage_part[@]}"; do     
 		echo "[Downloading '$j' (part $i/3)]"
-		curl -s --retry 3 -m 60 -o /$j -L $url/blob/master/$j?raw=true
+		curl -s --retry 5 -m 30 -o /$j -L $url/blob/master/$j?raw=true
 		i=$((i + 1))
 	done
 	cat /${debPackage}a* > /${debPackage}
