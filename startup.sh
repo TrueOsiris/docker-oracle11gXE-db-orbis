@@ -2,41 +2,37 @@
 
 set -e
 initfile="oracleinstall.step"
-debfile="oracle-xe_11.2.0-1.0_amd64.deb"
+debbase="oracle-xe_11.2.0-1.0_amd64.deb"
+url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
 
-debPrep () {
-	local url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
-	local debPackage_part=( 
-		${debPackage}aa 
-		${debPackage}ab 
-		${debPackage}ac
-	)
-	local i=1
-	for j in "${debPackage_part[@]}"; do     
-		echo "[Downloading '$j' (part $i/3)]"
-		curl -s --retry 5 -m 30 -o /$j -L $url/blob/master/$j?raw=true
-		i=$((i + 1))
-	done
-	cat /${debPackage}a* > /${debPackage}
-	rm -f /${debPackage}a*
-}
-
-GetInstallstep () {
-	installstep=`cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'`
+debpull {
+	debPackage=${debbase}$1
+	echo "Downloading '$debPackage' ..."
+	curl -s --retry 5 -m 30 -o /$j -L $url/blob/master/$debPackage?raw=true
 }
 
 if [ -f /config/$(echo $initfile) ]; then
-        echo 'initfile already exists.'
+        echo "Initfile already exists."
 else
-	echo 'creating initfile $initfile.'
+	echo "Creating initfile $initfile ..."
 	echo -e "Do not remove this file.\nIf you do, container will be fully reset on next start." > /config/$(echo $initfile)
 	echo -e "Installstep 0: initfile created" >> /config/$(echo $initfile)
 fi
-GetInstallstep
-echo $installstep
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'`=0 ]; then
+	if [ ! -d /config/debpackages ]; then
+		echo "Creating folder /config/debpackages ..."
+		mkdir -p  /config/debpackages
+		echo -e "Installstep 0: initfile created" >> /config/$(echo $initfile)
+	fi
+fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'`=1 ]; then
+	debpull "aa"
+	echo -e "Installstep 2: Downloaded $debbaseaa" >> /config/$(echo $initfile)
+fi
+	
 
-
-
+#cat /${debPackage}a* > /${debPackage}
+#rm -f /${debPackage}a*
 
 #debPrep 
 #dpkg --install /${debPackage} && rm -f /${debPackage}
