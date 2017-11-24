@@ -36,7 +36,7 @@ ENV PORT 1521
 
 EXPOSE 1521
 EXPOSE 8080
-VOLUME ["/u01/app/oracle","/work"]
+VOLUME ["/u01/app/oracle","/config"]
 
 ENV processes 500
 ENV sessions 555
