@@ -5,30 +5,43 @@ initfile="oracleinstall.step"
 debbase="oracle-xe_11.2.0-1.0_amd64.deb"
 url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
 
-debpull {
-	debPackage=${debbase}$1
-	echo "Downloading '$debPackage' ..."
-	curl -s --retry 5 -m 30 -o /$j -L $url/blob/master/$debPackage?raw=true
+debPull () {
+        debPackage=${debbase}$1
+        echo "Downloading '$url/raw/master/$debPackage' ..."
+        curl --retry 5 -m 60 -o $2/$debPackage -L $url/blob/master/$debPackage?raw=true
+        echo "Downloaded '$url/blob/master/$debPackage' to $2"
 }
+if [ ! -d /config ]; then
+  echo "Error! There is no /config volume!"
+fi
 
 if [ -f /config/$(echo $initfile) ]; then
-        echo "Initfile already exists."
+  echo "Initfile exists. Continuing installsteps if needed."
 else
-	echo "Creating initfile $initfile ..."
-	echo -e "Do not remove this file.\nIf you do, container will be fully reset on next start." > /config/$(echo $initfile)
-	echo -e "Installstep 0: initfile created" >> /config/$(echo $initfile)
+  echo "Creating initfile $initfile ..."
+  echo -e "Do not remove this file.\nIf you do, container will be fully reset on next start." > /config/$(echo $initfile)
+  echo -e "Installstep 0: initfile created" >> /config/$(echo $initfile)
 fi
-if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'`=0 ]; then
-	if [ ! -d /config/debpackages ]; then
-		echo "Creating folder /config/debpackages ..."
-		mkdir -p  /config/debpackages
-		echo -e "Installstep 0: initfile created" >> /config/$(echo $initfile)
-	fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 0 ]; then
+  if [ ! -d /config/debpackages ]; then
+    echo "Creating folder /config/debpackages ..."
+    mkdir -p  /config/debpackages
+  fi
+  echo -e "Installstep 1: /config/debpackages created" >> /config/$(echo $initfile)
 fi
-if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'`=1 ]; then
-	debpull "aa"
-	echo -e "Installstep 2: Downloaded $debbaseaa" >> /config/$(echo $initfile)
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 1 ]; then
+  debPull "aa" "/config/debpackages/"
+  echo -e "Installstep 2: Downloaded debian package part aa" >> /config/$(echo $initfile)
 fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 2 ]; then
+  debPull "ab" "/config/debpackages/"
+  echo -e "Installstep 3: Downloaded debian package part ab" >> /config/$(echo $initfile)
+fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 3 ]; then
+  debPull "ac" "/config/debpackages/"
+  echo -e "Installstep 4: Downloaded debian package part ac" >> /config/$(echo $initfile)
+fi
+
 	
 
 #cat /${debPackage}a* > /${debPackage}
