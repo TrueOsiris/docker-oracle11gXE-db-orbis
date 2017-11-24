@@ -1,11 +1,9 @@
 #!/bin/bash
 
 set -e
-initfile=$(echo $HOST_HOSTNAME)\.initialised
+initfile="oracleinstall.step"
+debfile="oracle-xe_11.2.0-1.0_amd64.deb"
 
-
-
-debPackage="oracle-xe_11.2.0-1.0_amd64.deb"
 debPrep () {
 	local url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
 	local debPackage_part=( 
@@ -22,9 +20,27 @@ debPrep () {
 	cat /${debPackage}a* > /${debPackage}
 	rm -f /${debPackage}a*
 }
-debPrep 
-dpkg --install /${debPackage} && rm -f /${debPackage}
-mv /init.ora       /u01/app/oracle/product/11.2.0/xe/config/scripts
-mv /initXETemp.ora /u01/app/oracle/product/11.2.0/xe/config/scripts
-mv /u01/app/oracle/product /u01/app/oracle-product
-apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+GetInstallstep () {
+	installstep=`cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'`
+}
+
+if [ -f /config/$(echo $initfile) ]; then
+        echo 'initfile already exists.'
+else
+	echo 'creating initfile $initfile.'
+	echo -e "Do not remove this file.\nIf you do, container will be fully reset on next start." > /config/$(echo $initfile)
+	echo -e "Installstep: 0. initfile created" >> /config/$(echo $initfile)
+fi
+GetInstallstep
+echo $installstep
+
+
+
+
+#debPrep 
+#dpkg --install /${debPackage} && rm -f /${debPackage}
+#mv /init.ora       /u01/app/oracle/product/11.2.0/xe/config/scripts
+#mv /initXETemp.ora /u01/app/oracle/product/11.2.0/xe/config/scripts
+#mv /u01/app/oracle/product /u01/app/oracle-product
+#apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
