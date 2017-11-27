@@ -1,22 +1,20 @@
 FROM trueosiris/docker-baseimage:latest
 MAINTAINER Tim Chaubet <tim.chaubet@agfa.com>
 
-ARG DEBIAN_FRONTEND=noninteractive
 
-ADD chkconfig /sbin/chkconfig
-#ADD oracle-install.sh /oracle-install.sh
+
 ADD init.ora /
 ADD initXETemp.ora /
 
-# Prepare to install Oracle
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get upgrade -y \
- && apt-get install -y -q libaio1 \
-                          net-tools \
-                          bc \
+ && apt-get install -y -q bc \
                           curl \
-                          rlwrap \
                           htop \
+                          libaio1 \
+                          net-tools \
+                          rlwrap \
                           vim \
  && apt-get clean \
  && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* \
@@ -27,6 +25,13 @@ RUN apt-get update \
 RUN mkdir -p /etc/my_init.d
 COPY startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
+
+COPY runonce.sh /sbin/runonce
+RUN chmod +x /sbin/runonce; sync \
+    && /bin/bash -c /sbin/runonce \
+    && rm /sbin/runonce
+
+
 
 ENV ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
 ENV PATH $ORACLE_HOME/bin:$PATH
