@@ -9,7 +9,7 @@ url="https://github.com/TrueOsiris/docker-oracle11gXE-db-orbis"
 debPull () {
         debPackage=${debbase}$1
         echo "Downloading '$url/blob/master/$debPackage' ..."
-        curl --retry 5 -m 60 -o $2/$debPackage -L $url/raw/master/$debPackage?raw=true
+        curl --retry 5 -m 60 -o $2/$debPackage -L $url/blob/master/$debPackage?raw=true
         echo "Downloaded '$url/blob/master/$debPackage' to $2"
 }
 if [ ! -d /config ]; then
