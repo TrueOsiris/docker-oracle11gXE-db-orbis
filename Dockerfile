@@ -4,7 +4,7 @@ MAINTAINER Tim Chaubet <tim.chaubet@agfa.com>
 ARG DEBIAN_FRONTEND=noninteractive
 
 ADD chkconfig /sbin/chkconfig
-ADD oracle-install.sh /oracle-install.sh
+#ADD oracle-install.sh /oracle-install.sh
 ADD init.ora /
 ADD initXETemp.ora /
 
