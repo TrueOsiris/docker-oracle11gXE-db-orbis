@@ -45,6 +45,7 @@ if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{prin
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 4 ]; then
   echo "Reassembling the debian base-install package file ..."
+  ls -hl /config/debpackages 2>&1
   cat /config/debpackages/${debbase}a* > /config/debpackages/${debbase}
   echo -e "Installstep 5: Reassembled the debian base-install package" >> $F
 fi
