@@ -17,8 +17,7 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* \
  && ln -s /usr/bin/awk /bin/awk \
- && mkdir /var/lock/subsys \
- && chmod 755 /sbin/chkconfig 
+ && mkdir /var/lock/subsys 
  
 RUN mkdir -p /etc/my_init.d
 COPY startup.sh /etc/my_init.d/startup.sh
