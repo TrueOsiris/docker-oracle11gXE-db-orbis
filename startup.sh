@@ -41,15 +41,28 @@ if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(
   debPull "ac" "/config/debpackages/"
   echo -e "Installstep 4: Downloaded debian package part ac" >> /config/$(echo $initfile)
 fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 4 ]; then
+  echo "Reassembling the debian base-install package file ..."
+  cat /config/debpackages/${debPackage}a* > /config/debpackages/${debPackage}
+  echo -e "Installstep 5: Reassembled the debian base-install package" >> /config/$(echo $initfile)
+fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 5 ]; then
+  echo "Removing downloaded parts ..."
+  rm -f /config/debpackages/${debPackage}a*
+  echo -e "Installstep 6: Removed downloaded parts" >> /config/$(echo $initfile)
+fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 6 ]; then
+  echo "Installing the package ..."
+  dpkg --install /config/debpackages/${debPackage}
+  echo -e "Installstep 7: Debian package installed" >> /config/$(echo $initfile)
+fi
+if [ `cat /config/$(echo $initfile) | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 7 ]; then
+  echo "Removing the base-install package file ..."
+  rm -f /config/debpackages/${debPackage}
+  echo -e "Installstep 8: Removing package install file" >> /config/$(echo $initfile)
+fi
 
-	
-
-#cat /${debPackage}a* > /${debPackage}
-#rm -f /${debPackage}a*
-
-#debPrep 
-#dpkg --install /${debPackage} && rm -f /${debPackage}
 #mv /init.ora       /u01/app/oracle/product/11.2.0/xe/config/scripts
 #mv /initXETemp.ora /u01/app/oracle/product/11.2.0/xe/config/scripts
 #mv /u01/app/oracle/product /u01/app/oracle-product
-#apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
