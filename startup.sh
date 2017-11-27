@@ -45,22 +45,22 @@ if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{prin
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 4 ]; then
   echo "Reassembling the debian base-install package file ..."
-  cat /config/debpackages/${debPackage}a* > /config/debpackages/${debPackage}
+  cat /config/debpackages/${debbase}a* > /config/debpackages/${debbase}
   echo -e "Installstep 5: Reassembled the debian base-install package" >> $F
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 5 ]; then
   echo "Removing downloaded parts ..."
-  rm -f /config/debpackages/${debPackage}a*
+  rm -f /config/debpackages/${debbase}a*
   echo -e "Installstep 6: Removed downloaded parts" >> $F
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 6 ]; then
   echo "Installing the package ..."
-  dpkg --install /config/debpackages/${debPackage}
+  dpkg --install /config/debpackages/${debbase}
   echo -e "Installstep 7: Debian package installed" >> $F
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 7 ]; then
   echo "Removing the base-install package file ..."
-  rm -f /config/debpackages/${debPackage}
+  rm -f /config/debpackages/${debbase}
   echo -e "Installstep 8: Removing package install file" >> $F
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 8 ]; then
