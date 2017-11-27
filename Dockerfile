@@ -36,14 +36,13 @@ ENV PATH $ORACLE_HOME/bin:$PATH
 ENV ORACLE_SID=XE
 ENV DEFAULT_SYS_PASS oracle
 ENV PORT 1521
+ENV processes 500
+ENV sessions 555
+ENV transactions 610
 
 EXPOSE 1521
 EXPOSE 8080
 VOLUME ["/u01/app/oracle","/config"]
-
-ENV processes 500
-ENV sessions 555
-ENV transactions 610
 
 #ADD entrypoint.sh /
 #ENTRYPOINT ["/entrypoint.sh"]
