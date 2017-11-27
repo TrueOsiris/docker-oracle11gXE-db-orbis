@@ -1,7 +1,5 @@
 FROM trueosiris/docker-baseimage:latest
-MAINTAINER Tim Chaubet <tim.chaubet@agfa.com>
-
-
+MAINTAINER Tim Chaubet <tim@chaubet.be>
 
 ADD init.ora /
 ADD initXETemp.ora /
