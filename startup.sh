@@ -10,7 +10,8 @@ debPull () {
         debPackage=${debbase}$1
         echo "Downloading '$url/blob/master/$debPackage' ..."
         curl --retry 5 -m 60 -o $2/$debPackage -L $url/blob/master/$debPackage?raw=true
-        echo "Downloaded '$url/blob/master/$debPackage' to $2"
+        echo "Downloaded '$url/blob/master/$debPackage' to $2 ..."
+        echo "Filesize is "`du -h $2/$debPackage | awk '{print $1}' `
 }
 if [ ! -d /config ]; then
   echo "Error! There is no /config volume!"
