@@ -24,11 +24,11 @@ COPY startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
 COPY runonce.sh /sbin/runonce
+COPY runonce.sh /sbin/chkconfig
 RUN chmod +x /sbin/runonce; sync \
     && /bin/bash -c /sbin/runonce \
     && rm /sbin/runonce
-
-
+RUN chmod +X /sbin/chkconfig; sync 
 
 ENV ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
 ENV PATH $ORACLE_HOME/bin:$PATH
