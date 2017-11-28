@@ -17,6 +17,7 @@ if [ ! -d /config ]; then
 fi
 
 if [ -f /config/$(echo $initfile) ]; then
+  echo date
   echo "Initfile exists. Continuing installsteps if needed."
 else
   echo "Creating initfile $initfile ..." 
@@ -56,7 +57,7 @@ if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{prin
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 6 ]; then
   echo "Installing the package ..."
-  dpkg --install /config/debpackages/${debbase}
+  dpkg --force-confdef --install /config/debpackages/${debbase}
   echo -e "Installstep 7: Debian package installed" >> $F
 fi
 if [ `cat $F | grep Installstep | tail -n1 | awk -v FS="(Installstep |:)" '{print $2}'` = 7 ]; then
